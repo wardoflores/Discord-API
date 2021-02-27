@@ -331,50 +331,6 @@ async def _8ball(ctx, *, question):
                 'Very doubtful.']
     await ctx.send(f'Question: {question}\nAnswer: {random.choice(responses)}')
 
-@client.command(aliases=['joe'])
-async def joey(ctx, *, question):
-    responses = ['Unsa man?', # custom responses
-                'Tama man.', # Yes answers
-                'mao may nasabutan.',
-                'Walay duda ana.',
-                'Oo - syempre.',
-                'Salig lang.',
-                'Salig lang lagi.',
-                'Sa akong panan.aw, Oo.',
-                'Taas ang posibilidad.',
-                'Payts ra tanan.',
-                'Oo.',
-                'Padung sa Oo ra ang tubag nako ana.',
-                'Wala ko kasabot, usbi daw.', # maybe answers
-                'Pangutana ra unya.',
-                'Nindot noh kung unya nalang ni.',
-                'Di ko sure ana', # No answers
-                'Hunahuna sa unya pangutana.',
-                'Ayaw og salig nako.',
-                'Dili akong matubag ana.',
-                'Base sa akong mga natun.an kay dili.',
-                'Di maayo ang panan.aw nako ani',
-                'Duda jud ko ana.',
-                'Dili gud.',
-                'Buang.',
-                'Ambot.',
-                'Bye ka.',
-                'Gani.', # most common words
-                'Unsa man?',
-                'Gani.',
-                'murag.',
-                'Gani.',
-                'Unsa man?',
-                'Gani.',
-                'murag.',
-                'Gani.',
-                'Unsa man?',
-                'Gani.',
-                'murag.',
-                
-                ]           
-    await ctx.send(f'Question: {question}\nAnswer: {random.choice(responses)}')
-
 @client.command()
 async def load(ctx, extension): 
     client.load_extension(f'cogs.{extension}')
