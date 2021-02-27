@@ -5,9 +5,20 @@ import youtube_dl # For music player.
 import discord
 from discord.ext import commands
 from discord.utils import get 
+import logging
+from self_chat import chatbot_response_b
+import tensorflow as tf
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import TFGPT2LMHeadModel, GPT2Tokenizer
 
+tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-large")
+model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-large")
+chat_history_ids = []
+step = 0
 
 client = commands.Bot(command_prefix = '.') # client variable def. # 
+
 
 # Bot ready and status configuration
 @client.event
@@ -16,12 +27,26 @@ async def on_ready(): # When the bot has all the information it needs on Discord
     print("Bot is ready.")
     print('We have logged in as {0.user}'.format(client))
 
-# Greetings event
+# on message and NLP(GPT2) code
 @client.event
 async def on_message(message):
-    # if message.author == client.user: # Disabled since im alone in prac server lol
-        # return
+    global step
+    if message.content.startswith("*"):
+        to_send=chatbot_response_b(step=step, user=message.content)
+        print(to_send)
+        try:
+            await message.channel.send(to_send)
+        except:
+            await message.channel.send("No response...")
 
+    if message.author == client.user:
+        return
+    
+    if message.content.startswith("$"):
+        if message.content("$spam"):
+            pass
+        print(message.content)
+    
     if message.content.startswith('.hello'):
         await message.channel.send('Hello!')
 
@@ -349,4 +374,6 @@ async def _8ball(ctx, *, question):
                 'Very doubtful.']
     await ctx.send(f'Question: {question}\nAnswer: {random.choice(responses)}')
  
-client.run('') # Use Bot token in Parameter / Bot token is a code that links your code to an app so that the code can manipulate the application.
+client.run('')  
+# Use Bot token in Parameter /
+#  Bot token is a code that links your code to an app so that the code can manipulate the application.
