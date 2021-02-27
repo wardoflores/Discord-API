@@ -1,11 +1,11 @@
-import discord
-import os 
 import random 
+import os 
+from os import system
+import shutil
+import youtube_dl
+import discord
 from discord.ext import commands
 from discord.utils import get 
-import youtube_dl
-import shutil
-from os import system
 
 client = commands.Bot(command_prefix = '.') 
 
@@ -88,10 +88,6 @@ async def unban(ctx, *, member):
             await ctx.guild.unban(user)
             await ctx.send(f'Unbanned {user.mention}')
             return
-
-@client.command(aliases=['unsaynet'])
-async def ping(ctx): 
-    await ctx.send(f'Pong! {client.latency * 1000}ms') 
 
 @client.command(pass_context=True, aliases=['j','joi'])
 async def join(ctx):
@@ -307,6 +303,23 @@ async def queue(ctx, url: str):
 
     print("Song added to queue\n")
 
+@client.command()
+async def load(ctx, extension): 
+    client.load_extension(f'cogs.{extension}')
+
+@client.command()
+async def unload(ctx, extension):
+    client.unload_extension(f'cogs.{extension}')
+
+@client.command()
+async def reload(ctx, extension):
+    client.unload_extension(f'cogs.{extension}')
+    client.load_extension(f'cogs.{extension}')
+
+@client.command(aliases=['unsaynet'])
+async def ping(ctx): 
+    await ctx.send(f'Pong! {client.latency * 1000}ms') 
+
 @client.command(aliases=['8ball'])
 async def _8ball(ctx, *, question):
     responses = ['It is certain.',
@@ -331,17 +344,5 @@ async def _8ball(ctx, *, question):
                 'Very doubtful.']
     await ctx.send(f'Question: {question}\nAnswer: {random.choice(responses)}')
 
-@client.command()
-async def load(ctx, extension): 
-    client.load_extension(f'cogs.{extension}')
 
-@client.command()
-async def unload(ctx, extension):
-    client.unload_extension(f'cogs.{extension}')
-
-@client.command()
-async def reload(ctx, extension):
-    client.unload_extension(f'cogs.{extension}')
-    client.load_extension(f'cogs.{extension}')
- 
 client.run('')
