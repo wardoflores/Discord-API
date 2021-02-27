@@ -2,6 +2,12 @@
 
 First API application for Python, might add more features later.
 
+# Usage
+
+Add your Token in the Parameter of this code;
+`client.run('')`
+
+
 # Style Guide
 
 Just because you can, doesn't mean that you should.
