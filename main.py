@@ -5,18 +5,7 @@ import shutil
 import youtube_dl
 import discord
 from discord.ext import commands
-from discord.utils import get
-import logging
-from self_chat import chatbot_response_b
-import tensorflow as tf
-import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
-from transformers import TFGPT2LMHeadModel, GPT2Tokenizer
-
-tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-large")
-model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-large")
-chat_history_ids = []
-step = 0
+from discord.utils import get 
 
 client = commands.Bot(command_prefix = '.') 
 
@@ -28,23 +17,8 @@ async def on_ready():
 
 @client.command()
 async def on_message(message):
-    global step
-    if message.content.startswith("*"):
-        to_send=chatbot_response_b(step=step, user=message.content)
-        print(to_send)
-        try:
-            await message.channel.send(to_send)
-        except:
-            await message.channel.send("No response...")
-
     if message.author == client.user:
         return
-    
-    if message.content.startswith("$"):
-        if message.content("$spam"):
-            pass
-        print(message.content)
-    
     if message.content.startswith('.hello'):
         await message.channel.send('Hello!')
 
