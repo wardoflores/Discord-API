@@ -1,3 +1,5 @@
+#! python3
+
 import random 
 import os 
 from os import system

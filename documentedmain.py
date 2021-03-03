@@ -1,3 +1,5 @@
+#! python3
+
 import os # For cog loading pre start.
 import random # For 8ball command replies.
 import shutil # For music player feature.
