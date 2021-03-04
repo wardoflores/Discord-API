@@ -1,4 +1,7 @@
 #! python3
+# Discord Bot with Admin and music playing Features.
+# Eduardo Jose Flores III: https://github.com/Coalemus
+# Copyright (c) Eduardo Jose Flores III
 
 import os # For cog loading pre start.
 import random # For 8ball command replies.
