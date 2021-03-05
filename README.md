@@ -11,6 +11,14 @@ Add your Token in the Parameter of this code;
 
 load the Cog 'stream' for no predownloading of song.
 
+# Future Features
+
+Show list of queued Songs.
+
+input functions through reactions.
+
+Leveling system.s
+
 # Resources
 
 ## Lucas
