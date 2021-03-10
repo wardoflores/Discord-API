@@ -3,6 +3,7 @@
 # Eduardo Jose Flores III: https://github.com/Coalemus
 # Copyright (c) Eduardo Jose Flores III
 
+from secret import TOKEN
 import random 
 import os 
 from os import system
@@ -352,4 +353,4 @@ async def _8ball(ctx, *, question):
     await ctx.send(f'Question: {question}\nAnswer: {random.choice(responses)}')
 
 
-client.run('')
+client.run(TOKEN)
