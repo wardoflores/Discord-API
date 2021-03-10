@@ -18,7 +18,7 @@ client = commands.Bot(command_prefix = '.')
 
 @client.event
 async def on_ready(): 
-    await client.change_presence(status=discord.Status.idle, activity=discord.Game('learning how to sing')) 
+    await client.change_presence(status=discord.Status.idle, activity=discord.Game('Buff Correll videos')) 
     print("Bot is ready.")
     print('We have logged in as {0.user}'.format(client))
 
