@@ -5,14 +5,23 @@
 
 from secret import TOKEN
 import random 
+from random import randint
 import os 
 from os import system
 import shutil
 import asyncio
 import youtube_dl
 import discord
+from discord import opus
 from discord.ext import commands
-from discord.utils import get 
+from discord.utils import get
+
+
+
+sound_folder = r'D:\Music\Sound Effects'
+log_channel_id = int('821008061480697896')
+tag_dict={'tag1': ['name1', 'name2'],  # this dict saves the tags and their sounds. Be sure to use lists also when a tag has only 1 name
+          'tag2': ['name1', 'name2', 'name3']}
 
 client = commands.Bot(command_prefix = '.') 
 

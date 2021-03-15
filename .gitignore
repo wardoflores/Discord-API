@@ -1,3 +1,4 @@
 
 secret.py
 *.pyc
+cogs/__pycache__/stream.cpython-38.pyc
