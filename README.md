@@ -21,11 +21,14 @@ Leveling system.s
 
 # Resources
 
-## Lucas
+## Lucas - Structure
 https://www.youtube.com/channel/UCR-zOCvDCayyYy1flR5qaAg
 
-## HowToDoThings
+## HowToDoThings - Voice / music playing
 https://www.youtube.com/channel/UC84QByFyK-WTB9Y56AU5EMg
 
-## Official Discord.py repository
+## JonSnowWhite - Soundboard
+https://github.com/JonSnowWhite/discord-soundboard-bot
+
+## Official Discord.py repository 
 https://github.com/Rapptz/discord.py
