@@ -13,8 +13,8 @@ class Example(commands.Cog): # Cog must be in capital C
 
     # Commands example
     @commands.command()
-    async def ping(self, ctx):
-        await ctx.send('Pong!')
+    async def pling(self, ctx):
+        await ctx.send('Plong!')
 
 def setup(client):
     client.add_cog(Example(client))
