@@ -19,7 +19,7 @@ class SoundboardCog(commands.Cog):
             folder: The path to the folder with the sound files (str)
             log_channel_id: The id of the log_channel (int)
             """
-        self.folder = folder
+        self.folder = r"C:\Users\Flores\Joey-Repositories\Python-Discord-bot\sounds"
         self.bot = bot
         self.log_channel_id = log_channel_id
         self.send_log = None             # will be assigned later
@@ -36,13 +36,14 @@ class SoundboardCog(commands.Cog):
 
     @staticmethod
     def _load_songs(folder):
-        """This function returns a list with all the mp3-file names in the given folder
+        """
+        This function returns a list with all the mp3-file names in the given folder
         Args:
             folder: The folder with the mp3 files (String)
         Returns:
             sound_list: The list with file names, all lowercase and without the .mp3 (list)
         This function raises an Exception, if the folder was empty
-            """
+        """
         sound_list = sorted([i[:-4].lower() for i in os.listdir(folder) if '.mp3' in i])
 
         if not sound_list:
@@ -50,11 +51,12 @@ class SoundboardCog(commands.Cog):
 
         return sound_list
 
+    @commands.Cog.listener()
     async def on_ready(self):
         self.send_log = ExtModule.get_send_log(self)
         opus.load_opus('libopus.so.0')  # the opus library
 
-    @commands.command(name='play',
+    @commands.command(name='playsound',
                       description=' tags/name || Plays the sound with the first name found in the arguments.'
                                   ' If no name is found, plays a random sound which has all tags found in the aguments.'
                                   ' Ignores upper/lowercase.'
@@ -62,15 +64,16 @@ class SoundboardCog(commands.Cog):
                                   ' the sound is chosen randomly.'
                                   ' Requires you to be in a voice channel!')
     @ExtModule.reaction_respond
-    async def play(self, ctx: commands.Context, *args):
-        """This command plays the first sound name found in args, if one exists.
+    async def playsound(self, ctx: commands.Context, *args):
+        """
+        This command plays the first sound name found in args, if one exists.
         If none exists, all args will be interpreted as tags. The command will create the cut, of all
         valid tag parameters and play a random file from that.
         If that list is empty/no args is formatted validly this command plays a random sound
         Args:
             ctx: The context of the command, which is mandatory in rewrite (commands.Context)
             args: Shall contain at least one filnename or multiple tags (all String)
-            """
+        """
         try:  # user must be connected to a voice channel
             voice_channel = ctx.author.voice.channel
         except AttributeError:
@@ -104,16 +107,17 @@ class SoundboardCog(commands.Cog):
                 after=lambda e: SoundboardCog.disconnector(vc, self.bot))
         await self.send_log('Playing: ' + name)
 
-    @commands.command(name='stop',
+    @commands.command(name='stopsound',
                       aliases=['halt'],
                       description='The bot will stop playing a sound and leave the current voice channel.'
                                   'Requires you to be in the same voice channel as the bot!')
     @ExtModule.reaction_respond
-    async def stop(self, ctx: commands.Context):
-        """This function stops the bot playing a sound and makes it leave the current voice channel.
+    async def stopsound(self, ctx: commands.Context):
+        """
+        This function stops the bot playing a sound and makes it leave the current voice channel.
          Args:
              ctx: The context of the command, which is mandatory in rewrite (commands.Context)
-             """
+        """
         for connection in self.bot.voice_clients:
             if ctx.author.voice.channel == connection.channel:
                 return await connection.disconnect()
@@ -122,11 +126,12 @@ class SoundboardCog(commands.Cog):
                       aliases=['sounds'], description='Prints a list of all sounds on the soundboard.')
     @ExtModule.reaction_respond
     async def soundlist(self, ctx: commands.Context):
-        """This function prints a list of all the sounds on the Soundboard to the channel/user where it was requested.
+        """
+        This function prints a list of all the sounds on the Soundboard to the channel/user where it was requested.
         Args:
             ctx: The context of the command, which is mandatory in rewrite (commands.Context)
-            """
-        _sound_string = 'List of all sounds (command format !play [soundname]):'
+        """
+        _sound_string = 'List of all sounds (command format .playsound [soundname]):'
         for sound in self.sound_list:
             if len(_sound_string) + 1 + len(sound) > 1800:
                 await ctx.channel.send('```\n' + _sound_string + '```\n')
@@ -137,11 +142,12 @@ class SoundboardCog(commands.Cog):
                       aliases=['tags'], description='Prints a list of all tags with soundnames on the soundboard.')
     @ExtModule.reaction_respond
     async def taglist(self, ctx: commands.Context):
-        """This function prints a list of all the tags with their sounds on the Soundboard to the
+        """
+        This function prints a list of all the tags with their sounds on the Soundboard to the
          channel/user where it was requested.
         Args:
             ctx: The context of the command, which is mandatory in rewrite (commands.Context)
-            """
+        """
         _tag_string = 'tag || sounds\n'
         for tag in self.tag_dict.keys():
             if len(_tag_string) > 1800:
@@ -155,11 +161,12 @@ class SoundboardCog(commands.Cog):
 
     @staticmethod
     def disconnector(voice_client: discord.VoiceClient, bot: commands.Bot):
-        """This function is passed as the after parameter of FFmpegPCMAudio() as it does not take coroutines.
+        """
+        This function is passed as the after parameter of FFmpegPCMAudio() as it does not take coroutines.
         Args:
             voice_client: The voice client that will be disconnected (discord.VoiceClient)
             bot: The bot that will terminate the voice client, which will be this very bot
-            """
+        """
         coro = voice_client.disconnect()
         fut = asyncio.run_coroutine_threadsafe(coro, bot.loop)
         try:
