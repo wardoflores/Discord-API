@@ -69,7 +69,7 @@ async def dm(ctx, user_id=None, *, args=None):
         except:
             await ctx.channel.send("Couldn't dm the given user.")
 
-@client.command(brief="Bot messages all Users", description="The bot sends a message specified by the User to all members.")
+@client.command(brief="Bot messages all Users.", description="The bot sends a message specified by the User to all members.")
 async def dm_all(ctx, *, args=None):
     if args != None:
         members = ctx.guild.members
@@ -335,10 +335,11 @@ async def reload(ctx, extension):
 
 @client.command(aliases=['unsaynet'], brief="Shows your own Ping.", description="Shows a different ping for different people.")
 async def ping(ctx): 
-    await ctx.send(f'Pong! {client.latency * 1000}ms') 
+    await ctx.send(f'Pong! {client.latency * 100 // .2}ms') 
 
 @client.command(aliases=['8ball'], brief="Basic 8ball.", description="Don't depend on this.")
 async def _8ball(ctx, *, question):
+
     responses = ['It is certain.',
                 'It is decidedly so.',
                 'Without a doubt.',
@@ -359,7 +360,46 @@ async def _8ball(ctx, *, question):
                 'my sources say no.',
                 'Outlook not very good',
                 'Very doubtful.']
+
     await ctx.send(f'Question: {question}\nAnswer: {random.choice(responses)}')
 
+@client.command(aliases=['Babye', 'bye', 'babye', 'byye', 'Byye', 'babyye', 'byyye'], brief='Bye greet.', description="Says bye back.")
+async def Bye(ctx):
+
+    await ctx.send("Bye! See you next time.")
+
+@client.command(aliases=['thankyou', 'Thanks', 'ty', 'thanks', 'TY'], brief='Thanks greet.', description="Says you're welcome.")
+async def Thankyou(ctx):
+
+    responses = ["You're welcome.",
+                    'No problem.',
+                    'Anytime.']
+
+    await ctx.send(f"{random.choice(responses)}")
+
+@client.command(aliases=['Goodmorning', 'Gm', 'gm', 'gudmorneng'], brief="Greets you Good morning.", description="It doesn't greet you good night. :(")
+async def goodmorning(ctx):
+
+    await ctx.send("Good morning!")
+
+@client.command(aliases=['Goodnight', 'Gn', 'gn', 'gudnayt'], brief="Greets you Good night.", description="It doesn't greet you good morning. :(")
+async def goodnight(ctx):
+
+    await ctx.send("Good night!")
+
+@client.command(aliases=['hi', 'Hello', 'hello', 'Hey', 'hey', 'Yo', 'yo', 'Sup', 'sup'], brief='Says hi.', description="Command to say hi to the bot.")
+async def Whatsup(ctx):
+
+    responses = ['hi~',
+                'Hello~',
+                'hello~',
+                'Hey~',
+                'hey~',
+                'Yo~',
+                'yo~',
+                'Sup~',
+                'sup~']
+
+    await ctx.send(f"{random.choice(responses)}")
 
 client.run(TOKEN)
