@@ -67,7 +67,7 @@ class stream(commands.Cog):
 
     @commands.command()
     async def stream(self, ctx, *, url):
-        """Streams from a url (same as yt, but doesn't predownload)"""
+        """plays/streams music from a url (same as yt, but doesn't predownload)"""
 
         async with ctx.typing():
             player = await YTDLSource.from_url(url, loop=self.client.loop, stream=True)
