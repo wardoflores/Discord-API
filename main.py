@@ -19,8 +19,8 @@ from discord.utils import get
 
 
 sound_folder = r'D:\Music\Sound Effects'
-log_channel_id = int('821008061480697896')
-tag_dict={'tag1': ['name1', 'name2'],  # this dict saves the tags and their sounds. Be sure to use lists also when a tag has only 1 name
+log_channel_id = int('821008061480697896') 
+tag_dict={'tag1': ['name1', 'name2'],
           'tag2': ['name1', 'name2', 'name3']}
 
 client = commands.Bot(command_prefix = '.') 
@@ -35,7 +35,7 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
-    if message.content.startswith('!hello'):
+    if message.content.startswith('.hello'):
         await message.reply('Hello!', mention_author=True)
     await client.process_commands(message)
 
@@ -47,17 +47,23 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print("f'{member} has left the server.")
 
-@client.command(brief="Erases messages.", description="Clears a specified amount of text depending on user input.")
+@client.command(
+    brief="Erases messages.", 
+    description="Clears a specified amount of text depending on user input.")
 async def clear(ctx, amount=0):
     if (ctx.message.author.permissions_in(ctx.message.channel).manage_messages):
         await ctx.channel.purge(limit=amount+1)
 
-@client.command(brief="Permission error prompt.", description="Prompts the user for unpermitted clear command.")
+@client.command(
+    brief="Permission error prompt.", 
+    description="Prompts the user for unpermitted clear command.")
 async def clear_error(ctx, error):
     if isinstance(error, commands.MissingPermissions):
         await ctx.send('Sorry you are not allowed to use this command.')
 
-@client.command(brief="Direct message using bot.", description="The bot sends a message specified by the User.")
+@client.command(
+    brief="Direct message using bot.", 
+    description="The bot sends a message specified by the User.")
 async def dm(ctx, user_id=None, *, args=None):
     if user_id != None and args != None:
         try:
@@ -69,7 +75,9 @@ async def dm(ctx, user_id=None, *, args=None):
         except:
             await ctx.channel.send("Couldn't dm the given user.")
 
-@client.command(brief="Bot messages all Users.", description="The bot sends a message specified by the User to all members.")
+@client.command(
+    brief="Bot messages all Users.", 
+    description="The bot sends a message specified by the User to all members.")
 async def dm_all(ctx, *, args=None):
     if args != None:
         members = ctx.guild.members
@@ -84,16 +92,22 @@ async def dm_all(ctx, *, args=None):
     else:
         await ctx.channel.send("A message was not provided.")
 
-@client.command(brief="Kicks a User.", description="Speaks for itself.")
+@client.command(
+    brief="Kicks a User.", 
+    description="Speaks for itself.")
 async def kick(ctx, member : discord.Member, *, reason=None): 
     await member.kick(reason=reason)
 
-@client.command(brief="Bans a User.", description="Speaks for itself.")
+@client.command(
+    brief="Bans a User.", 
+    description="Speaks for itself.")
 async def ban(ctx, member : discord.Member, *, reason=None):
     await member.ban(reason=reason)
     await ctx.send(f'Banned {member.mention}')
 
-@client.command(brief="Unbans a User.", description="Speaks for itself.")
+@client.command(
+    brief="Unbans a User.", 
+    description="Speaks for itself.")
 async def unban(ctx, *, member): 
     banned_users = await ctx.guild.bans()
     member_name, member_discriminator = member.split('#')
@@ -106,7 +120,9 @@ async def unban(ctx, *, member):
             await ctx.send(f'Unbanned {user.mention}')
             return
 
-@client.command(pass_context=True, aliases=['j','joi'], brief="Bot joins in your Voice channel.", description="Use when you have already joined a Voice channel.")
+@client.command(pass_context=True, aliases=['j','joi'], 
+brief="Bot joins in your Voice channel.", 
+description="Use when you have already joined a Voice channel.")
 async def join(ctx):
     global voice
     channel = ctx.message.author.voice.channel
@@ -127,7 +143,9 @@ async def join(ctx):
 
     await ctx.send(f'joined {channel}')    
 
-@client.command(pass_context=True, aliases=['l','lea'], brief="Bot leaves your Voice channel.", description="Only works if Bot is in your Voice channel.")
+@client.command(pass_context=True, aliases=['l','lea'], 
+brief="Bot leaves your Voice channel.", 
+description="Only works if Bot is in your Voice channel.")
 async def leave(ctx):
     channel = ctx.message.author.voice.channel
     voice = get(client.voice_clients, guild=ctx.guild)
@@ -140,7 +158,9 @@ async def leave(ctx):
         print('Bot was told to leave voice channel, but was not in one.')
         await ctx.send('Dont think I am in a voice channel.')
 
-@client.command(pass_context=True, aliases=['p','pla'], brief="Plays a Youtube/Spotify song, predownloaded.", description="Takes some time to load since it predownloads the song.")
+@client.command(pass_context=True, aliases=['p','pla'], 
+brief="Plays a Youtube/Spotify song, predownloaded.", 
+description="Takes some time to load since it predownloads the song.")
 async def play(ctx, url: str):
     
     def check_queue():
@@ -236,7 +256,9 @@ async def play(ctx, url: str):
     await ctx.send(f'Playing: {nname[0]}')
     print('Playing\n')
 
-@client.command(pass_context=True, aliases=['pa','pau'], brief="Pauses a playing song.", description="Doesn't 'stop' a song, there's a seeparate command for that.")
+@client.command(pass_context=True, aliases=['pa','pau'], 
+brief="Pauses a playing song.", 
+description="Doesn't 'stop' a song, there's a seeparate command for that.")
 async def pause(ctx):
 
     voice = get(client.voice_clients, guild=ctx.guild)
@@ -249,7 +271,9 @@ async def pause(ctx):
         print("music not playing failed pause")
         await ctx.send("music not playing failed pause")
 
-@client.command(pass_context=True, aliases=['r','res'], brief="Resumes a paused song.", description="Onnly resumes a 'paused' song and not a 'stopped' song.")
+@client.command(pass_context=True, aliases=['r','res'], 
+brief="Resumes a paused song.", 
+description="Onnly resumes a 'paused' song and not a 'stopped' song.")
 async def resume(ctx):
 
     voice = get(client.voice_clients, guild=ctx.guild)
@@ -262,7 +286,9 @@ async def resume(ctx):
         print("music is not paused")
         await ctx.send("music is not paused")
 
-@client.command(pass_context=True, aliases=['s','sto'], brief="Stops current song.", description="It is not a pause command.")
+@client.command(pass_context=True, aliases=['s','sto'], 
+brief="Stops current song.",
+ description="It is not a pause command.")
 async def stop(ctx):
 
     voice = get(client.voice_clients, guild=ctx.guild)
@@ -279,7 +305,9 @@ async def stop(ctx):
 
 queues = {}
 
-@client.command(pass_context=True, aliases=['q','que'], brief="Queues songs , predownloaded.", description="Tested for Play command only, add Issue if it doesn't work for Stream command.")
+@client.command(pass_context=True, aliases=['q','que'], 
+brief="Queues songs , predownloaded.", 
+description="Tested for Play command only, add Issue if it doesn't work for Stream command.")
 async def queue(ctx, url: str):
     Queue_infile = os.path.isdir("./Queue")
     if Queue_infile is False:
@@ -320,25 +348,34 @@ async def queue(ctx, url: str):
 
     print("Song added to queue\n")
 
-@client.command(brief="Loads a cog.", description="Cogs are 'Example', 'Test', and 'stream'.")
+@client.command(
+    brief="Loads a cog.", 
+    description="Cogs are 'Example', 'Test', 'soundboard', and 'stream'.")
 async def load(ctx, extension): 
     client.load_extension(f'cogs.{extension}')
 
-@client.command(brief="Unloads a cog.", description="Cogs are 'Example', 'Test', and 'stream'.")
+@client.command(
+    brief="Unloads a cog.", 
+    description="Cogs are 'Example', 'Test', 'soundboard', and 'stream'.")
 async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
 
-@client.command(brief="Reloads a cog, refreshing it.", description="Cogs are 'Example', 'Test', and 'stream'.")
+@client.command(
+    brief="Reloads a cog, refreshing it.", 
+    description="Cogs are 'Example', 'Test', 'soundboard', and 'stream'.")
 async def reload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
     client.load_extension(f'cogs.{extension}')
 
-@client.command(aliases=['unsaynet'], brief="Shows your own Ping.", description="Shows a different ping for different people.")
+@client.command(aliases=['unsaynet', 'kahinay'],
+ brief="Shows your own Ping.", 
+ description="Shows a different ping for different people.")
 async def ping(ctx): 
     await ctx.send(f'Pong! {client.latency * 100 // .2}ms') 
 
-@client.command(aliases=['8ball'], brief="Basic 8ball.", description="Don't depend on this.")
-async def _8ball(ctx, *, question):
+@client.command(aliases=['8ball'], brief="Basic 8ball.", 
+description="Don't depend on this.")
+async def magic8ball(ctx, *, question):
 
     responses = ['It is certain.',
                 'It is decidedly so.',
@@ -363,12 +400,16 @@ async def _8ball(ctx, *, question):
 
     await ctx.send(f'Question: {question}\nAnswer: {random.choice(responses)}')
 
-@client.command(aliases=['Babye', 'bye', 'babye', 'byye', 'Byye', 'babyye', 'byyye'], brief='Bye greet.', description="Says bye back.")
+@client.command(aliases=['Babye', 'bye', 'babye', 'byye', 'Byye', 'babyye', 'byyye'],
+ brief='Bye greet.', 
+ description="Says bye back.")
 async def Bye(ctx):
 
     await ctx.send("Bye! See you next time.")
 
-@client.command(aliases=['thankyou', 'Thanks', 'ty', 'thanks', 'TY'], brief='Thanks greet.', description="Says you're welcome.")
+@client.command(aliases=['thankyou', 'Thanks', 'ty', 'thanks', 'TY'],
+ brief='Thanks greet.', 
+ description="Says you're welcome.")
 async def Thankyou(ctx):
 
     responses = ["You're welcome.",
@@ -377,17 +418,23 @@ async def Thankyou(ctx):
 
     await ctx.send(f"{random.choice(responses)}")
 
-@client.command(aliases=['Goodmorning', 'Gm', 'gm', 'gudmorneng'], brief="Greets you Good morning.", description="It doesn't greet you good night. :(")
+@client.command(aliases=['Goodmorning', 'Gm', 'gm', 'gudmorneng'],
+ brief="Greets you Good morning.", 
+ description="It doesn't greet you good night. :(")
 async def goodmorning(ctx):
 
     await ctx.send("Good morning!")
 
-@client.command(aliases=['Goodnight', 'Gn', 'gn', 'gudnayt'], brief="Greets you Good night.", description="It doesn't greet you good morning. :(")
+@client.command(aliases=['Goodnight', 'Gn', 'gn', 'gudnayt'],
+ brief="Greets you Good night.", 
+ description="It doesn't greet you good morning. :(")
 async def goodnight(ctx):
 
     await ctx.send("Good night!")
 
-@client.command(aliases=['hi', 'Hello', 'hello', 'Hey', 'hey', 'Yo', 'yo', 'Sup', 'sup'], brief='Says hi.', description="Command to say hi to the bot.")
+@client.command(aliases=['hi', 'Hello', 'hello', 'Hey', 'hey', 'Yo', 'yo', 'Sup', 'sup'],
+ brief='Says hi.', 
+ description="Command to say hi to the bot.")
 async def Whatsup(ctx):
 
     responses = ['hi~',
