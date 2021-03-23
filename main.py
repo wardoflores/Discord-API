@@ -160,7 +160,7 @@ async def leave(ctx):
 
 @client.command(pass_context=True, aliases=['p','pla'], 
 brief="Plays a Youtube/Spotify song, predownloaded.", 
-description="Takes some time to load since it predownloads the song.")
+description="Use when stream command frequently crashes.")
 async def play(ctx, url: str):
     
     def check_queue():
