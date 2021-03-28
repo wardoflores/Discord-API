@@ -17,6 +17,8 @@ input functions through reactions.
 
 Leveling system.
 
+Play spotify Playlists.
+
 # Resources
 
 ## Lucas - Structure
