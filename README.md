@@ -19,6 +19,8 @@ Leveling system.
 
 Play spotify Playlists.
 
+gTTS implementation.
+
 # Resources
 
 ## Lucas - Structure
