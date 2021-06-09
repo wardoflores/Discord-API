@@ -608,6 +608,13 @@ async def Whatsup(ctx):
 
 '''
 
+Pre-loaded cogs.
+
+'''
+client.load_extension('cogs.stream')
+
+'''
+
 Add Bot token in a `secret.py` module in same directory of `main.py`, define a `TOKEN` variable there.
 Bot token is a code that links your code to an app so that the code can manipulate the application.
 
