@@ -63,7 +63,7 @@ class stream(commands.Cog):
 
     @commands.Cog.listener() 
     async def on_ready(self): 
-        print('Bot cog is ready.')
+        print('stream cog is ready.')
 
     @commands.command()
     async def stream(self, ctx, *, url):
