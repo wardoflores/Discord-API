@@ -15,6 +15,7 @@ import discord
 from discord import opus
 from discord.ext import commands
 from discord.utils import get
+from discord import Spotify
 
 
 
@@ -31,6 +32,8 @@ Bot ready and status configuration.
 When the bot has all the information it needs on Discord,
 it 'prints Bot is ready.'
 
+
+
 '''
 @client.event
 
@@ -38,6 +41,19 @@ async def on_ready():
     await client.change_presence(status=discord.Status.idle, activity=discord.Game('Buff Correll videos'))
     print("Bot is ready.")
     print('We have logged in as {0.user}'.format(client))
+
+'''
+
+Spotify info display. TODO
+
+'''
+@client.command()
+async def spotify(ctx, user: discord.Member=None):
+    user = user or ctx.author
+    for activity in user.activities:
+        if isinstance(activity, Spotify):
+            await ctx.send(f"{user} is listening to {activity.title} by {activity.artist}")
+
 
 '''
 
@@ -612,6 +628,7 @@ Pre-loaded cogs.
 
 '''
 client.load_extension('cogs.stream')
+# client.load_extension('cogs.soundboard') # TODO
 
 '''
 
