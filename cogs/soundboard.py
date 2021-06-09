@@ -55,6 +55,7 @@ class SoundboardCog(commands.Cog):
     async def on_ready(self):
         self.send_log = ExtModule.get_send_log(self)
         opus.load_opus('libopus.so.0')  # the opus library
+        print('soundboard cog is ready.')
 
     @commands.command(name='playsound',
                       description=' tags/name || Plays the sound with the first name found in the arguments.'
