@@ -47,7 +47,9 @@ async def on_ready():
 Spotify info display. TODO
 
 '''
-@client.command()
+@client.command(
+    brief="Displays user Spotify activity.",
+    description="Only works if the activity displayed under User is 'Listening to Spotify.")
 async def spotify(ctx, user: discord.Member=None):
     user = user or ctx.author
     for activity in user.activities:
@@ -256,7 +258,7 @@ it downloads the .mp3 file then plays it.
 
 '''
 @client.command(pass_context=True, aliases=['p','pla'], 
-brief="Plays a Youtube/Spotify song, predownloaded.", 
+brief="Plays a Youtube/Spotify song. (Use 'Stream' command instead)", 
 description="Use when stream command frequently crashes.")
 async def play(ctx, url: str):
     
