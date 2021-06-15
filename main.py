@@ -42,6 +42,7 @@ async def on_ready():
     print("Bot is ready.")
     print('We have logged in as {0.user}'.format(client))
 
+
 '''
 
 Spotify info display. TODO
@@ -51,8 +52,8 @@ Spotify info display. TODO
     brief="Displays user Spotify activity.",
     description="Only works if the activity displayed under User is 'Listening to Spotify.")
 async def spotify(ctx, user: discord.Member=None):
-    user = user or ctx.author
-    for activity in user.activities:
+
+    for activity in discord.Member.status:
         if isinstance(activity, Spotify):
             await ctx.send(f"{user} is listening to {activity.title} by {activity.artist}")
 
