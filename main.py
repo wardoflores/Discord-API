@@ -68,8 +68,8 @@ Greetings Event.
 async def on_message(message):
     if message.author == client.user:
         return
-    if message.content.startswith('.hello'):
-        await message.reply('Hello!', mention_author=True)
+    if message.content.startswith('debug'):
+        await message.channel.send('debugged!')
     await client.process_commands(message)
 
 '''
