@@ -11,16 +11,13 @@ Load the Cog `stream` for no predownloading of song.
 
 # Future Features
 
+Play spotify Playlists.
+
 Show list of queued Songs.
 
 input functions through reactions.
 
 Leveling system.
-
-Play spotify Playlists.
-
-gTTS implementation.
-
 # Resources
 
 ## Lucas - Structure
