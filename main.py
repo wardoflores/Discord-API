@@ -32,8 +32,6 @@ Bot ready and status configuration.
 When the bot has all the information it needs on Discord,
 it 'prints Bot is ready.'
 
-
-
 '''
 @client.event
 
@@ -53,14 +51,16 @@ Spotify info display. TODO
     description="Only works if the activity displayed under User is 'Listening to Spotify.")
 async def spotify(ctx, user: discord.Member=None):
 
-    for activity in discord.Member.status:
-        if isinstance(activity, Spotify):
-            await ctx.send(f"{user} is listening to {activity.title} by {activity.artist}")
+    pass
+
+    # for activity in discord.Member.status:
+    #     if isinstance(activity, Spotify):
+    #         await ctx.send(f"{user} is listening to {activity.title} by {activity.artist}")
 
 
 '''
 
-Greetings Event.
+Debugging messages and channel specific functions.
 
 '''
 @client.event
@@ -68,9 +68,9 @@ Greetings Event.
 async def on_message(message):
     if message.author == client.user:
         return
-    if message.content.startswith('debug'):
-        await message.channel.send('debugged!')
-    await client.process_commands(message)
+
+    if message.content.startswith('test'):
+        await message.channel.send('test!')
 
 '''
 
@@ -556,7 +556,7 @@ async def magic8ball(ctx, *, question):
 Bot says bye back.
 
 '''
-@client.command(aliases=['Babye', 'bye', 'babye', 'byye', 'Byye', 'babyye', 'byyye'],
+@client.command(aliases=['goodbye', 'Babye', 'bye', 'babye', 'byye', 'Byye', 'babyye', 'byyye'],
  brief='Bye greet.', 
  description="Says bye back.")
 async def Bye(ctx):
