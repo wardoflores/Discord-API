@@ -106,6 +106,9 @@ async def on_message(message):
     if message.content.startswith(('whatsup', 'hi', 'Hello', 'hello', 'Hey', 'hey', 'Yo', 'yo', 'Sup', 'sup')):
         await message.channel.send(f"{random.choice(hi_responses)}")
 
+    if message.content.startswith(('ping' 'kahinay' 'internet' 'PLDT' 'Globe' 'lag')):
+        await message.channel.send(f'Pong! {client.latency * 100 // .2}ms') 
+
     if message.content.startswith(('Bye', 'goodbye', 'Babye', 'Byye', 'babyye', 'byyye', 'bye', 'babye', 'byye')):
         await message.channel.send("Bye! See you next time.")
 
@@ -168,13 +171,13 @@ async def on_message(message):
             await message.channel.send('Hope this was a 3, or 6, or 9.')
             await message.channel.send('Else reset to 1.')
 
-        if message.content.endswith('33'):
+        if message.content.endswith('33') and not message.content.endswith('3'):
             await message.channel.send('You need to :clap: :clap:')
             await message.channel.send('Reset to 1')
-        if message.content.endswith('66'):
+        if message.content.endswith('66') and not message.content.endswith('3'):
             await message.channel.send('You need to :clap: :clap:')
             await message.channel.send('Reset to 1')
-        if message.content.endswith('99'):
+        if message.content.endswith('99') and not message.content.endswith('3'):
             await message.channel.send('You need to :clap: :clap:')
             await message.channel.send('Reset to 1')
 
@@ -193,7 +196,7 @@ prompts a member has joined; member is an object in discord lib.
 @client.event 
 
 async def on_member_join(member):
-    print("f'{member} has joined a server.")
+    print("f' Test subject {member} has joined a server.")
 
 '''
 
@@ -203,7 +206,7 @@ prompts a member has left.
 @client.event
 
 async def on_member_remove(member):
-    print("f'{member} has left the server.")
+    print("f'Test subject {member} has escaped the server.")
 
 '''
 
@@ -619,28 +622,14 @@ async def reload(ctx, extension):
 
 '''
 
-`ctx` is context, mandatory parameter.
-Bot responds Pong! to command `ping`
-Client latency says actual ping.
-'ms' is not mandatory.
-
-'''
-@client.command(aliases=['unsaynet', 'kahinay'],
- brief="Shows your own Ping.", 
- description="Shows a different ping for different people.")
-async def ping(ctx): 
-    await ctx.send(f'Pong! {client.latency * 100 // .2}ms') 
-
-'''
-
 Basic magic 8ball, can be repurposed into another 
 random answer command.
 
 '''
-@client.command(aliases=['8ball'], brief="Basic 8ball.", 
-description="Don't depend on this.")
-async def magic8ball(ctx, *, question):
 
+@client.command(aliases=['8ball'], brief="Basic 8ball.", 
+    description="Don't depend on this.")
+async def magic8ball(ctx, *, question):
     responses = ['It is certain.',
                 'It is decidedly so.',
                 'Without a doubt.',
