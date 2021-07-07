@@ -36,14 +36,25 @@ it 'prints Bot is ready.'
 @client.event
 
 async def on_ready():
-    await client.change_presence(status=discord.Status.idle, activity=discord.Game('Buff Correll videos'))
+    await client.change_presence(status=discord.Status.idle, activity=discord.Game('3-6-9'))
     print("Bot is ready.")
     print('We have logged in as {0.user}'.format(client))
 
+'''
+
+Shutdown command, only owner role can execute.
 
 '''
 
-Spotify info display. TODO
+@client.command(aliases=['shit', 'welldeservedrest'])
+@commands.is_owner()
+async def shutdown(ctx):
+    await ctx.send("Shutting off... Bye!")
+    await ctx.bot.close()
+
+'''
+
+Spotify info display. TODO doesn't work idunno why.
 
 '''
 @client.command(
@@ -62,15 +73,117 @@ async def spotify(ctx, user: discord.Member=None):
 
 Debugging messages and channel specific functions.
 
+TODO use these.
+message.content.split
+
 '''
 @client.event
 
 async def on_message(message):
     if message.author == client.user:
         return
+    
+    hi_responses = ['hi~',
+                'Hello~',
+                'hello~',
+                'Hey~',
+                'hey~',
+                'Yo~',
+                'yo~',
+                'Sup~',
+                'sup~']
+
+    ty_responses = ["You're welcome.",
+                    'No problem.',
+                    'Anytime.']
 
     if message.content.startswith('test'):
         await message.channel.send('test!')
+
+    if message.content.startswith(('Thankyou', 'thankyou', 'Thanks', 'ty', 'thanks', 'TY')):
+        await message.channel.send(f"{random.choice(ty_responses)}")
+
+    if message.content.startswith(('whatsup', 'hi', 'Hello', 'hello', 'Hey', 'hey', 'Yo', 'yo', 'Sup', 'sup')):
+        await message.channel.send(f"{random.choice(hi_responses)}")
+
+    if message.content.startswith(('Bye', 'goodbye', 'Babye', 'Byye', 'babyye', 'byyye', 'bye', 'babye', 'byye')):
+        await message.channel.send("Bye! See you next time.")
+
+    if message.content.startswith(('goodmorning', 'Goodmorning', 'Gm', 'gm', 'gudmorneng')):
+        await message.channel.send("Good morning!")
+
+    if message.content.startswith(('goodnight', 'Goodnight', 'Gn', 'gn', 'gudnayt')):
+        await message.channel.send("Good night!")
+
+    if message.channel.name == 'announcements':
+            if message.content.startswith('debug'):
+                await message.channel.send('debugged announcements!')
+
+    if message.channel.name == 'log':
+        if message.content.startswith('debug'):
+            await message.channel.send('debugged logs!')
+
+    if message.channel.name == 'general':
+        if message.content.startswith('debug'):
+            await message.channel.send('debugged General!')
+
+    if message.channel.name == 'bot-playground':
+        if message.content.startswith('debug'):
+            await message.channel.send('debugged bot-playground!')
+    
+    if message.channel.name == 'vc-chat':
+        if message.content.startswith('debug'):
+            await message.channel.send('debugged vc-chat!')
+
+
+    if message.channel.name == '3-6-9':
+        if message.content.startswith('debug'):
+            await message.channel.send('debugged 3-6-9!')
+
+        if message.content.startswith('1') and len(message.content) == 1:
+            await message.channel.send("Game start")
+            await message.channel.send("Timer started (Under developement.)")
+            await message.channel.send(":clap: emoji doesn't work in code so type `clap` for now.")
+
+            if message.content == message.channel.history(limit=1, oldest_first=False) - 1: 
+                # TODO make this logic into needing the right number to be inputted as +1 the previous message,
+                # Use `message.reference` maybe? Or `message.to_reference`
+                # TODO Add timer.
+                
+                await message.channel.send('this code works')
+
+        # TODO Logic for multiple iterations of numbers with 3 - 6 - 9 in different positions
+        if message.content.endswith('3') and not message.content.endswith('33'):
+            await message.channel.send('You need to :clap:')
+            await message.channel.send('Reset to 1')
+        if message.content.endswith('6') and not message.content.endswith('66'):
+            await message.channel.send('You need to :clap:')
+            await message.channel.send('Reset to 1')
+        if message.content.endswith('9') and not message.content.endswith('99'):
+            await message.channel.send('You need to :clap:')
+            await message.channel.send('Reset to 1')
+
+        if message.content.startswith("clap"):
+            await message.channel.send(':clap:')
+            await message.channel.send('Hope this was a 3, or 6, or 9.')
+            await message.channel.send('Else reset to 1.')
+
+        if message.content.endswith('33'):
+            await message.channel.send('You need to :clap: :clap:')
+            await message.channel.send('Reset to 1')
+        if message.content.endswith('66'):
+            await message.channel.send('You need to :clap: :clap:')
+            await message.channel.send('Reset to 1')
+        if message.content.endswith('99'):
+            await message.channel.send('You need to :clap: :clap:')
+            await message.channel.send('Reset to 1')
+
+        if message.content.startswith("clap clap"):
+            await message.channel.send(':clap: :clap:')
+            await message.channel.send('Hope this was a 33, or 66, or 99.')
+            await message.channel.send('Else reset to 1.')
+
+    await client.process_commands(message)
 
 '''
 
@@ -550,80 +663,6 @@ async def magic8ball(ctx, *, question):
                 'Very doubtful.']
 
     await ctx.send(f'Question: {question}\nAnswer: {random.choice(responses)}')
-
-'''
-
-Bot says bye back.
-
-'''
-@client.command(aliases=['goodbye', 'Babye', 'bye', 'babye', 'byye', 'Byye', 'babyye', 'byyye'],
- brief='Bye greet.', 
- description="Says bye back.")
-async def Bye(ctx):
-
-    await ctx.send("Bye! See you next time.")
-
-'''
-
-Bot responds to Gratitude.
-
-'''
-@client.command(aliases=['thankyou', 'Thanks', 'ty', 'thanks', 'TY'],
- brief='Thanks greet.', 
- description="Says you're welcome.")
-async def Thankyou(ctx):
-
-    responses = ["You're welcome.",
-                    'No problem.',
-                    'Anytime.']
-
-    await ctx.send(f"{random.choice(responses)}")
-
-'''
-
-Greets you Good morning.
-
-'''
-@client.command(aliases=['Goodmorning', 'Gm', 'gm', 'gudmorneng'],
- brief="Greets you Good morning.", 
- description="It doesn't greet you good night. :(")
-async def goodmorning(ctx):
-
-    await ctx.send("Good morning!")
-
-'''
-
-Greets you Good night.
-
-'''
-@client.command(aliases=['Goodnight', 'Gn', 'gn', 'gudnayt'],
- brief="Greets you Good night.", 
- description="It doesn't greet you good morning. :(")
-async def goodnight(ctx):
-
-    await ctx.send("Good night!")
-
-'''
-
-Bot says hi back.
-
-'''
-@client.command(aliases=['hi', 'Hello', 'hello', 'Hey', 'hey', 'Yo', 'yo', 'Sup', 'sup'],
- brief='Says hi.', 
- description="Command to say hi to the bot.")
-async def Whatsup(ctx):
-
-    responses = ['hi~',
-                'Hello~',
-                'hello~',
-                'Hey~',
-                'hey~',
-                'Yo~',
-                'yo~',
-                'Sup~',
-                'sup~']
-
-    await ctx.send(f"{random.choice(responses)}")
 
 '''
 
