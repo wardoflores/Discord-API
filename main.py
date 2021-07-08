@@ -17,7 +17,7 @@ from discord.ext import commands
 from discord.utils import get
 from discord import Spotify
 
-
+system('cls')
 
 sound_folder = r'D:\Music\Sound Effects' # Put your own sound effects directory here.
 log_channel_id = int('821008061480697896') 

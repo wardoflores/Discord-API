@@ -6,6 +6,8 @@ First API application for Python, adding more features over time.
 
 make a `secret.py` file in the root directory and add your `TOKEN` variable assigned to `client.run('')` with your API key as it's parameter.                                                 
 
+Run `start.bat`.
+
 `play` command could only be run when bot is run on the `main.py` file's directory.
 
 # Future Features
