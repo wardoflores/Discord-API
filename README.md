@@ -5,19 +5,15 @@ First API application for Python, adding more features over time.
 # Usage
 
 make a `secret.py` file in the root directory and add your `TOKEN` variable assigned to `client.run('')` with your API key as it's parameter.                                                       
-# Tips
-
-Load the Cog `stream` for no predownloading of song.
 
 # Future Features
 
-Add embed code into music features.
+input functions through reactions.
 
 Play spotify Playlists.
 
 Show list of queued Songs.
 
-input functions through reactions.
 
 Leveling system.
 # Resources

@@ -409,6 +409,16 @@ it downloads the .mp3 file then plays it.
 brief="Plays a Youtube/Spotify song. (Use 'Stream' command instead)", 
 description="Use when stream command frequently crashes.")
 async def play(ctx, url: str):
+    # global name # to fix code not finding `song.mp3` file.
+
+    if ctx.voice_client is None:
+            if ctx.author.voice:
+                await ctx.author.voice.channel.connect()
+            else:
+                await ctx.send("You are not connected to a voice channel.")
+                raise commands.CommandError("Author not connected to a voice channel.")
+    elif ctx.voice_client.is_playing():
+       ctx.voice_client.stop()
     
     def check_queue():
         Queue_infile = os.path.isdir(r".\Queue")
@@ -458,9 +468,9 @@ async def play(ctx, url: str):
         await ctx.send('ERROR: music playing')
         return
 
-    Queue_infile = os.path.isdir(".\\Queue")
+    Queue_infile = os.path.isdir(r".\Queue")
     try:
-        Queue_folder = ".\\Queue"
+        Queue_folder = r".\Queue"
         if Queue_infile is True:
             print("Removed old Queue folder")
             shutil.rmtree(Queue_folder)
@@ -487,10 +497,10 @@ async def play(ctx, url: str):
             ydl.download([url])
     except:
         print("FALLBACK: youtube-dl does not support this URL, using Spotify (This is normal if Spotify URL)")
-        c_path = os.path.dirname(os.path.realpath(__file__))
-        system("spotdl -f " + '"' + c_path + '"' + " -s " + url)
+        # c_path = os.path.dirname(os.path.realpath(__file__))
+        system(f"spotdl {url}") # "spotdl -f " + '"' + c_path + '"' + " -s " + url
 
-    for file in os.listdir('.\\'):
+    for file in os.listdir('.'):
         if file.endswith('.mp3'):
             name = file
             print(f'Renamed file: {file}\n')
@@ -505,8 +515,16 @@ async def play(ctx, url: str):
         description="This takes a while as it pre-downloads a song.", 
         color=discord.Colour.blue())
 
-    nname = name.rsplit('-', 2)
-    await embed.add_field(name=f'Playing: {nname[0]}', value="", inline=True)
+    try:
+        nname = name.rsplit("-", 2)
+        await ctx.send(f"Playing: {nname[0]}")
+    except:
+        await ctx.send(f"Playing Song")
+
+    embed.add_field(name=f'Playing: WIP', value="Click on the reactions to play/pause/stop. WIP", inline=True)
+
+    async with ctx.typing():
+        await ctx.send(embed=embed)
     print('Playing\n')
 
 '''
@@ -582,7 +600,7 @@ Works when using 'Play' command only.
 brief="Queues songs , predownloaded.", 
 description="Tested for Play command only, add Issue if it doesn't work for Stream command.")
 async def queue(ctx, url: str):
-    Queue_infile = os.path.isdir("./Queue")
+    Queue_infile = os.path.isdir(r".\Queue")
     if Queue_infile is False:
         os.mkdir("Queue")
     DIR = os.path.abspath(os.path.realpath("Queue"))
@@ -596,7 +614,7 @@ async def queue(ctx, url: str):
             add_queue = False
             queues[q_num] = q_num
 
-    queue_path = os.path.abspath(os.path.realpath("Queue") + f"\\song{q_num}.%(ext)s")
+    queue_path = os.path.abspath(os.path.realpath("Queue") + rf"\song{q_num}.%(ext)s")
 
     ydl_opts = {
         'format': 'bestaudio/best',
