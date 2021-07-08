@@ -406,22 +406,21 @@ it downloads the .mp3 file then plays it.
 
 '''
 @client.command(pass_context=True, aliases=['p','pla'], 
-brief="Plays a Youtube/Spotify song. (Use 'Stream' command instead)", 
-description="Use when stream command frequently crashes.")
+brief="Plays a Youtube song. (Use 'Stream' command instead)", 
+description="When it gives error no 13, do `youtube-dl --rm-cache-dir`.")
 async def play(ctx, url: str):
-    # global name # to fix code not finding `song.mp3` file.
 
     if ctx.voice_client is None:
-            if ctx.author.voice:
-                await ctx.author.voice.channel.connect()
-            else:
-                await ctx.send("You are not connected to a voice channel.")
-                raise commands.CommandError("Author not connected to a voice channel.")
+        if ctx.author.voice:
+            await ctx.author.voice.channel.connect()
+        else:
+            await ctx.send("You are not connected to a voice channel.")
+            raise commands.CommandError("Author not connected to a voice channel.")
     elif ctx.voice_client.is_playing():
-       ctx.voice_client.stop()
+        ctx.voice_client.stop()
     
     def check_queue():
-        Queue_infile = os.path.isdir(r".\Queue")
+        Queue_infile = os.path.isdir("./Queue")
         if Queue_infile is True:
             DIR = os.path.abspath(os.path.realpath("Queue"))
             length = len(os.listdir(DIR))
@@ -441,46 +440,48 @@ async def play(ctx, url: str):
                 if song_there:
                     os.remove("song.mp3")
                 shutil.move(song_path, main_location)
-                for file in os.listdir(".\\"):
-                    if file.endswith("mp3"):
-                        os.rename(file, "song.mp3")
+                for file in os.listdir("./"):
+                    if file.endswith(".mp3"):
+                        os.rename(file, 'song.mp3')
 
-                voice.play(discord.FFmpegPCMAudio('song.mp3'), after=lambda e: check_queue())
+                voice.play(discord.FFmpegPCMAudio("song.mp3"), after=lambda e: check_queue())
                 voice.source = discord.PCMVolumeTransformer(voice.source)
                 voice.source.volume = 0.07
-    
+
             else:
                 queues.clear()
                 return
 
         else:
             queues.clear()
-            print("No songs were queued before the ending of the last song.\n")    
-    
-    song_there = os.path.isfile('song.mp3')
+            print("No songs were queued before the ending of the last song\n")
+
+
+
+    song_there = os.path.isfile("song.mp3")
     try:
         if song_there:
             os.remove("song.mp3")
             queues.clear()
-            print('Removed old song file')
+            print("Removed old song file")
     except PermissionError:
-        print('Trying to delete song file, but its being played.')
-        await ctx.send('ERROR: music playing')
+        print("Trying to delete song file, but it's being played")
+        await ctx.send("ERROR: Music playing")
         return
 
-    Queue_infile = os.path.isdir(r".\Queue")
+
+    Queue_infile = os.path.isdir("./Queue")
     try:
-        Queue_folder = r".\Queue"
+        Queue_folder = "./Queue"
         if Queue_infile is True:
-            print("Removed old Queue folder")
+            print("Removed old Queue Folder")
             shutil.rmtree(Queue_folder)
     except:
         print("No old Queue folder")
-
     async with ctx.typing():
-        await ctx.send('Getting everything ready now.')
+        await ctx.send("Getting everything ready now")
 
-    voice = get(client.voice_clients, guild=ctx.guild) 
+    voice = get(client.voice_clients, guild=ctx.guild)
 
     ydl_opts = {
         'format': 'bestaudio/best',
@@ -490,23 +491,27 @@ async def play(ctx, url: str):
             'preferredcodec': 'mp3',
             'preferredquality': '192',
         }],
-    }   
+    }
     try:
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            print('Downloading audio now.\n')
+            print("Downloading audio now\n")
+            ydl.cache.remove()
             ydl.download([url])
     except:
-        print("FALLBACK: youtube-dl does not support this URL, using Spotify (This is normal if Spotify URL)")
-        # c_path = os.path.dirname(os.path.realpath(__file__))
-        system(f"spotdl {url}") # "spotdl -f " + '"' + c_path + '"' + " -s " + url
+        print("FALLBACK: youtube-dl does not support this URL, using Spotify (This is normal if spotify URL)")
+        c_path = os.path.dirname(os.path.realpath(__file__))
+        system("spotdl -f " + '"' + c_path + '"' + " -s " + url)  # make sure there are spaces in the -s
 
-    for file in os.listdir('./'):
-        if file.endswith('.mp3'):
+    async with ctx.typing():
+        await ctx.send("Audio file downloaded.")
+
+    for file in os.listdir("./"):
+        if file.endswith(".mp3"):
             name = file
-            print(f'Renamed file: {file}\n')
-            os.rename(file, 'song.mp3')
+            print(f"Renamed File: {file}\n")
+            os.rename(file, "song.mp3")
 
-    voice.play(discord.FFmpegPCMAudio('song.mp3'), after=lambda e: check_queue())
+    voice.play(discord.FFmpegPCMAudio("song.mp3"), after=lambda e: check_queue())
     voice.source = discord.PCMVolumeTransformer(voice.source)
     voice.source.volume = 0.07
 
@@ -514,14 +519,15 @@ async def play(ctx, url: str):
         title="Music Player", 
         description="This takes a while as it pre-downloads a song.", 
         color=discord.Colour.blue())
-
-    
     nname = name.rsplit("-", 2)
-    embed.add_field(name=f'Playing: {nname[0]}', value="Click on the reactions to play/pause/stop. (WIP)", inline=True)
 
+    embed.add_field(
+        name=f'Playing: {nname[0]}', 
+        value="Click on the reactions to play/pause/stop. (WIP)", 
+        inline=True)
     async with ctx.typing():
         await ctx.send(embed=embed)
-    print('Playing\n')
+    print("playing\n")
 
 '''
 
