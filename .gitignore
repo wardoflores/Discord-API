@@ -1,3 +1,6 @@
 
 secret.py
 *.pyc
+song.mp3
+Queue/song1.mp3
+*.mp3
