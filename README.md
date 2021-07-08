@@ -11,6 +11,8 @@ Load the Cog `stream` for no predownloading of song.
 
 # Future Features
 
+Add embed code into music features.
+
 Play spotify Playlists.
 
 Show list of queued Songs.

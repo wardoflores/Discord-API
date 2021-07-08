@@ -19,7 +19,7 @@ from discord import Spotify
 
 
 
-sound_folder = r'D:\Music\Sound Effects'
+sound_folder = r'D:\Music\Sound Effects' # Put your own sound effects directory here.
 log_channel_id = int('821008061480697896') 
 tag_dict={'tag1': ['name1', 'name2'],
           'tag2': ['name1', 'name2', 'name3']}
@@ -46,7 +46,10 @@ Shutdown command, only owner role can execute.
 
 '''
 
-@client.command(aliases=['shit', 'welldeservedrest'])
+@client.command(
+    aliases=['shit', 'rest'],
+    brief="Closes bot.",
+    description="Closes bot, reopen by running main.py script.")
 @commands.is_owner()
 async def shutdown(ctx):
     await ctx.send("Shutting off... Bye!")
@@ -73,9 +76,6 @@ async def spotify(ctx, user: discord.Member=None):
 
 Debugging messages and channel specific functions.
 
-TODO use these.
-message.content.split
-
 '''
 @client.event
 
@@ -98,7 +98,13 @@ async def on_message(message):
                     'Anytime.']
 
     if message.content.startswith('test'):
+        embed = discord.Embed(title="test title!",
+         description="Something something fix this later.",
+          color=discord.Colour.greyple())
+        embed.set_footer(icon_url = message.author.avatar_url, text = f"Requested by {message.author.name}")
+        
         await message.channel.send('test!')
+        await message.channel.send(embed=embed)
 
     if message.content.startswith(('Thankyou', 'thankyou', 'Thanks', 'ty', 'thanks', 'TY')):
         await message.channel.send(f"{random.choice(ty_responses)}")
@@ -106,16 +112,21 @@ async def on_message(message):
     if message.content.startswith(('whatsup', 'hi', 'Hello', 'hello', 'Hey', 'hey', 'Yo', 'yo', 'Sup', 'sup')):
         await message.channel.send(f"{random.choice(hi_responses)}")
 
-    if message.content.startswith(('ping' 'kahinay' 'internet' 'PLDT' 'Globe' 'lag')):
-        await message.channel.send(f'Pong! {client.latency * 100 // .2}ms') 
+    if message.content.startswith(('ping', 'kahinay', 'internet', 'PLDT', 'Globe', 'lag', 'net')):
+        embed = discord.Embed(title=f'Pong! {client.latency * 100 // .2}ms',
+         description="Shows different pings for other users.",
+          color=discord.Colour.green())
+        embed.set_footer(icon_url = message.author.avatar_url, text = f"Requested by {message.author.name}")
+
+        await message.channel.send(embed=embed) 
 
     if message.content.startswith(('Bye', 'goodbye', 'Babye', 'Byye', 'babyye', 'byyye', 'bye', 'babye', 'byye')):
         await message.channel.send("Bye! See you next time.")
 
-    if message.content.startswith(('goodmorning', 'Goodmorning', 'Gm', 'gm', 'gudmorneng')):
+    if message.content.startswith(('good morning', 'Good morning', 'Gm', 'gm', 'gud  morneng')):
         await message.channel.send("Good morning!")
 
-    if message.content.startswith(('goodnight', 'Goodnight', 'Gn', 'gn', 'gudnayt')):
+    if message.content.startswith(('good night', 'Good night', 'Gn', 'gn', 'gud nayt')):
         await message.channel.send("Good night!")
 
     if message.channel.name == 'announcements':
@@ -144,47 +155,59 @@ async def on_message(message):
             await message.channel.send('debugged 3-6-9!')
 
         if message.content.startswith('1') and len(message.content) == 1:
-            await message.channel.send("Game start")
-            await message.channel.send("Timer started (Under developement.)")
-            await message.channel.send(":clap: emoji doesn't work in code so type `clap` for now.")
+            embed = discord.Embed(title="3-6-9!",
+             description="Type clap if the number has 3, 6, or 9. Try to reach 4000!",
+             color=discord.Colour.orange())
+            embed.add_field(name = "Game start!",
+             value = "Timer started (Under developement.) \n :clap: emoji doesn't work in code so type `clap` for now.",
+             inline = True)
 
-            if message.content == message.channel.history(limit=1, oldest_first=False) - 1: 
+            await message.channel.send(embed=embed)
+
+            # if message.content == message.channel.history(limit=1, oldest_first=False) - 1: 
                 # TODO make this logic into needing the right number to be inputted as +1 the previous message,
                 # Use `message.reference` maybe? Or `message.to_reference`
+
                 # TODO Add timer.
                 
-                await message.channel.send('this code works')
+                # await message.channel.send('this code works')
 
         # TODO Logic for multiple iterations of numbers with 3 - 6 - 9 in different positions
-        if message.content.endswith('3') and not message.content.endswith('33'):
-            await message.channel.send('You need to :clap:')
-            await message.channel.send('Reset to 1')
-        if message.content.endswith('6') and not message.content.endswith('66'):
-            await message.channel.send('You need to :clap:')
-            await message.channel.send('Reset to 1')
-        if message.content.endswith('9') and not message.content.endswith('99'):
-            await message.channel.send('You need to :clap:')
-            await message.channel.send('Reset to 1')
+        if message.content.startswith('3') or message.content.startswith('6') or message.content.startswith('9'):
+            embed = discord.Embed(title="Failed!",
+                description="You need to :clap: , Reset to 1.",
+                color=discord.Colour.red())
+            await message.channel.send(embed=embed)
+            
+        if message.content.startswith(("clap")):
+            embed = discord.Embed(title=":clap:",
+                description="Hope this has 1 *3*, *6*, or *9*, Else reset to *1*.",
+                color=discord.Colour.green())
+            await message.channel.send(embed=embed)
 
-        if message.content.startswith("clap"):
-            await message.channel.send(':clap:')
-            await message.channel.send('Hope this was a 3, or 6, or 9.')
-            await message.channel.send('Else reset to 1.')
+        if message.content.endswith('33') or message.content.endswith('36') or message.content.endswith('39'):
+            embed = discord.Embed(title="Failed!",
+                description="You need to :clap: :clap:, Reset to 1.",
+                color=discord.Colour.red())
+            await message.channel.send(embed=embed)
 
-        if message.content.endswith('33') and not message.content.endswith('3'):
-            await message.channel.send('You need to :clap: :clap:')
-            await message.channel.send('Reset to 1')
-        if message.content.endswith('66') and not message.content.endswith('3'):
-            await message.channel.send('You need to :clap: :clap:')
-            await message.channel.send('Reset to 1')
-        if message.content.endswith('99') and not message.content.endswith('3'):
-            await message.channel.send('You need to :clap: :clap:')
-            await message.channel.send('Reset to 1')
+        if message.content.endswith('63')  or message.content.endswith('66') or message.content.endswith('69'):
+            embed = discord.Embed(title="Failed!",
+                description="You need to :clap: :clap:, Reset to 1.",
+                color=discord.Colour.red())
+            await message.channel.send(embed=embed)
 
-        if message.content.startswith("clap clap"):
-            await message.channel.send(':clap: :clap:')
-            await message.channel.send('Hope this was a 33, or 66, or 99.')
-            await message.channel.send('Else reset to 1.')
+        if message.content.endswith('93') or message.content.endswith('96') or message.content.endswith('99'):
+            embed = discord.Embed(title="Failed!",
+                description="You need to :clap: :clap:, Reset to 1.",
+                color=discord.Colour.red())
+            await message.channel.send(embed=embed)
+
+        if message.content.startswith("clap clap") and not message.content.startswith("clap"):
+            embed = discord.Embed(title=":clap: :clap:",
+                description="Hope this has 2 *3*, *6*, or *9*, Else reset to *1*.",
+                color=discord.Colour.green())
+            await message.channel.send(embed=embed)
 
     await client.process_commands(message)
 
@@ -196,6 +219,10 @@ prompts a member has joined; member is an object in discord lib.
 @client.event 
 
 async def on_member_join(member):
+    embed = discord.Embed(title="Welcome to the discord server!",
+     description="Something something fix this later.",
+      color=discord.Colour.green())
+    print(embed)
     print("f' Test subject {member} has joined a server.")
 
 '''
@@ -206,6 +233,10 @@ prompts a member has left.
 @client.event
 
 async def on_member_remove(member):
+    embed = discord.Embed(title="Someone left the server!",
+     description="Something something fix this later.",
+      color=discord.Colour.orange())
+    print(embed)
     print("f'Test subject {member} has escaped the server.")
 
 '''
@@ -380,7 +411,7 @@ description="Use when stream command frequently crashes.")
 async def play(ctx, url: str):
     
     def check_queue():
-        Queue_infile = os.path.isdir("./Queue")
+        Queue_infile = os.path.isdir(r".\Queue")
         if Queue_infile is True:
             DIR = os.path.abspath(os.path.realpath("Queue"))
             length = len(os.listdir(DIR))
@@ -400,7 +431,7 @@ async def play(ctx, url: str):
                 if song_there:
                     os.remove("song.mp3")
                 shutil.move(song_path, main_location)
-                for file in os.listdir("./"):
+                for file in os.listdir(".\\"):
                     if file.endswith("mp3"):
                         os.rename(file, "song.mp3")
 
@@ -427,16 +458,17 @@ async def play(ctx, url: str):
         await ctx.send('ERROR: music playing')
         return
 
-    Queue_infile = os.path.isdir("./Queue")
+    Queue_infile = os.path.isdir(".\\Queue")
     try:
-        Queue_folder = "./Queue"
+        Queue_folder = ".\\Queue"
         if Queue_infile is True:
             print("Removed old Queue folder")
             shutil.rmtree(Queue_folder)
     except:
         print("No old Queue folder")
 
-    await ctx.send('Getting everything ready now.')
+    async with ctx.typing():
+        await ctx.send('Getting everything ready now.')
 
     voice = get(client.voice_clients, guild=ctx.guild) 
 
@@ -458,7 +490,7 @@ async def play(ctx, url: str):
         c_path = os.path.dirname(os.path.realpath(__file__))
         system("spotdl -f " + '"' + c_path + '"' + " -s " + url)
 
-    for file in os.listdir('./'):
+    for file in os.listdir('.\\'):
         if file.endswith('.mp3'):
             name = file
             print(f'Renamed file: {file}\n')
@@ -468,8 +500,13 @@ async def play(ctx, url: str):
     voice.source = discord.PCMVolumeTransformer(voice.source)
     voice.source.volume = 0.07
 
+    embed = discord.Embed(
+        title="Music Player", 
+        description="This takes a while as it pre-downloads a song.", 
+        color=discord.Colour.blue())
+
     nname = name.rsplit('-', 2)
-    await ctx.send(f'Playing: {nname[0]}')
+    await embed.add_field(name=f'Playing: {nname[0]}', value="", inline=True)
     print('Playing\n')
 
 '''
