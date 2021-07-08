@@ -500,7 +500,7 @@ async def play(ctx, url: str):
         # c_path = os.path.dirname(os.path.realpath(__file__))
         system(f"spotdl {url}") # "spotdl -f " + '"' + c_path + '"' + " -s " + url
 
-    for file in os.listdir('.'):
+    for file in os.listdir('./'):
         if file.endswith('.mp3'):
             name = file
             print(f'Renamed file: {file}\n')
@@ -515,13 +515,9 @@ async def play(ctx, url: str):
         description="This takes a while as it pre-downloads a song.", 
         color=discord.Colour.blue())
 
-    try:
-        nname = name.rsplit("-", 2)
-        await ctx.send(f"Playing: {nname[0]}")
-    except:
-        await ctx.send(f"Playing Song")
-
-    embed.add_field(name=f'Playing: WIP', value="Click on the reactions to play/pause/stop. WIP", inline=True)
+    
+    nname = name.rsplit("-", 2)
+    embed.add_field(name=f'Playing: {nname[0]}', value="Click on the reactions to play/pause/stop. (WIP)", inline=True)
 
     async with ctx.typing():
         await ctx.send(embed=embed)
