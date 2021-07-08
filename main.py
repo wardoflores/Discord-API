@@ -407,7 +407,7 @@ it downloads the .mp3 file then plays it.
 '''
 @client.command(pass_context=True, aliases=['p','pla'], 
 brief="Plays a Youtube song. (Use 'Stream' command instead)", 
-description="When it gives error no 13, do `youtube-dl --rm-cache-dir`.")
+description="Only works if bot is run in its directory.")
 async def play(ctx, url: str):
 
     if ctx.voice_client is None:
@@ -503,7 +503,7 @@ async def play(ctx, url: str):
         system("spotdl -f " + '"' + c_path + '"' + " -s " + url)  # make sure there are spaces in the -s
 
     async with ctx.typing():
-        await ctx.send("Audio file downloaded.")
+        await ctx.send("Audio file downloaded. (Or failed to download.)")
 
     for file in os.listdir("./"):
         if file.endswith(".mp3"):
@@ -515,16 +515,15 @@ async def play(ctx, url: str):
     voice.source = discord.PCMVolumeTransformer(voice.source)
     voice.source.volume = 0.07
 
-    embed = discord.Embed(
-        title="Music Player", 
-        description="This takes a while as it pre-downloads a song.", 
-        color=discord.Colour.blue())
     nname = name.rsplit("-", 2)
-
+    embed = discord.Embed(
+        title=f'Playing: {nname[0]}', 
+        description="Click on the reactions to play/pause/stop.", 
+        color=discord.Colour.blue())
     embed.add_field(
-        name=f'Playing: {nname[0]}', 
-        value="Click on the reactions to play/pause/stop. (WIP)", 
-        inline=True)
+        name="Reminder:", 
+        value="Command could only be run when bot is run on the `main.py` file's directory.")
+
     async with ctx.typing():
         await ctx.send(embed=embed)
     print("playing\n")
