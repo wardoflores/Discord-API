@@ -17,14 +17,17 @@ from discord.ext import commands
 from discord.utils import get
 from discord import Spotify
 
-system('cls')
+system('cls') # For clean batch process.
 
 sound_folder = r'D:\Music\Sound Effects' # Put your own sound effects directory here.
 log_channel_id = int('821008061480697896') 
 tag_dict={'tag1': ['name1', 'name2'],
           'tag2': ['name1', 'name2', 'name3']}
 
-client = commands.Bot(command_prefix = '.') 
+intents = discord.Intents.all() # For spotify command.
+
+client = commands.Bot(command_prefix = '.', intents=intents)
+
 
 '''
 
@@ -57,19 +60,35 @@ async def shutdown(ctx):
 
 '''
 
-Spotify info display. TODO doesn't work idunno why.
+Spotify info display.
 
 '''
 @client.command(
     brief="Displays user Spotify activity.",
     description="Only works if the activity displayed under User is 'Listening to Spotify.")
-async def spotify(ctx, user: discord.Member=None):
+async def spotify(ctx, *, user: discord.Member = None):
+    if user == None:
+        user = ctx.author
+        pass
 
-    pass
+    spot = next((activity for activity in user.activities if isinstance(activity, Spotify)), None)
 
-    # for activity in discord.Member.status:
-    #     if isinstance(activity, Spotify):
-    #         await ctx.send(f"{user} is listening to {activity.title} by {activity.artist}")
+    if spot is None:
+        await ctx.send(f"{user.name} is not listening to Spotify")
+        return
+
+    if user.activities:
+        for activity in user.activities:
+            if isinstance(activity, Spotify):
+                embed = discord.Embed(
+                    title = f"{user.name}'s Spotify", 
+                    description = "Listening to {}".format(activity.title), 
+                    color = discord.Colour.green())
+                embed.set_thumbnail(url=activity.album_cover_url)
+                embed.add_field(name="Artist", value=activity.artist)
+                embed.add_field(name="Album", value=activity.album)
+                embed.set_footer(text="Song started at {}".format(activity.created_at.strftime("%H:%M")))
+                await ctx.send(embed=embed)
 
 
 '''
@@ -339,7 +358,7 @@ async def ban(ctx, member : discord.Member, *, reason=None):
 @client.command(
     brief="Unbans a User.", 
     description="Speaks for itself.")
-async def unban(ctx, *, member):
+async def unban(ctx, *, member: discord.Member):
     banned_users = await ctx.guild.bans()
     member_name, member_discriminator = member.split('#')
 

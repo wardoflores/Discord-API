@@ -74,11 +74,10 @@ class stream(commands.Cog):
             player = await YTDLSource.from_url(url, loop=self.client.loop, stream=True)
             ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
         
-        embed = discord.Embed(title='Now streaming: {}'.format(player.title), description="", color=discord.Colour.blue())
-        embed.add_field(
-            name="Reminder:", 
-            value="Any yt video could be played, and if there's no youtube link, it will search spotify instead.", 
-            inline=True)
+        embed = discord.Embed(
+            title='Now streaming: {}'.format(player.title), 
+            description="Any yt video could be played, and if there's no youtube link, it will search spotify instead.", 
+            color=discord.Colour.blue())
         embed.set_footer(icon_url = ctx.author.avatar_url, text = f"Requested by {ctx.author.name}")
 
         await ctx.send(embed=embed)
