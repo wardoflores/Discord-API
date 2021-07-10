@@ -71,12 +71,6 @@ async def spotify(ctx, *, user: discord.Member = None):
         user = ctx.author
         pass
 
-    spot = next((activity for activity in user.activities if isinstance(activity, Spotify)), None)
-
-    if spot is None:
-        await ctx.send(f"{user.name} is not listening to Spotify")
-        return
-
     if user.activities:
         for activity in user.activities:
             if isinstance(activity, Spotify):
@@ -89,7 +83,10 @@ async def spotify(ctx, *, user: discord.Member = None):
                 embed.add_field(name="Album", value=activity.album)
                 embed.set_footer(text="Song started at {}".format(activity.created_at.strftime("%H:%M")))
                 await ctx.send(embed=embed)
-
+                return
+    
+    await ctx.send(f"{user.name} is not listening to Spotify")
+    return
 
 '''
 
@@ -238,11 +235,26 @@ prompts a member has joined; member is an object in discord lib.
 @client.event 
 
 async def on_member_join(member):
-    embed = discord.Embed(title="Welcome to the discord server!",
-     description="Something something fix this later.",
-      color=discord.Colour.green())
-    print(embed)
-    print("f' Test subject {member} has joined a server.")
+    embed = discord.Embed(title="f' Test subject {member} has joined a server.",
+    description="Your role will be set to verified automatically in 5 minutes.",
+    color=discord.Colour.green())
+
+    print(embed=embed)
+
+    asyncio.sleep(300)
+
+    role = get(member.guild.roles, name='verified')
+
+    
+    await member.add_roles(role)
+    embed2 = discord.Embed(
+        title=f"{member} was given {role}", 
+        description="If you have time to provide feedback to improve the bot that would be well appreciated!", 
+        color=discord.Colour.blue())
+
+    print(embed=embed2)
+
+
 
 '''
 
@@ -511,15 +523,17 @@ async def play(ctx, url: str):
             'preferredquality': '192',
         }],
     }
-    try:
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            print("Downloading audio now\n")
-            ydl.cache.remove()
-            ydl.download([url])
-    except:
-        print("FALLBACK: youtube-dl does not support this URL, using Spotify (This is normal if spotify URL)")
-        c_path = os.path.dirname(os.path.realpath(__file__))
-        system("spotdl -f " + '"' + c_path + '"' + " -s " + url)  # make sure there are spaces in the -s
+    async with ctx.typing():
+        await ctx.send("Downloading Audio now...")
+        try:
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                print("Downloading audio now\n")
+                ydl.cache.remove()
+                ydl.download([url])
+        except:
+            print("FALLBACK: youtube-dl does not support this URL, using Spotify (This is normal if spotify URL)")
+            c_path = os.path.dirname(os.path.realpath(__file__))
+            system("spotdl -f " + '"' + c_path + '"' + " -s " + url)  # make sure there are spaces in the -s
 
     async with ctx.typing():
         await ctx.send("Audio file downloaded. (Or failed to download.)")
@@ -658,6 +672,48 @@ async def queue(ctx, url: str):
     await ctx.send("Adding song " + str(q_num) + " to the queue.")    
 
     print("Song added to queue\n")
+
+'''
+
+Next command for the music player.
+
+'''
+@client.command(
+    pass_context=True, 
+    aliases=['n', 'nex'],
+    brief="Plays the next song.",
+    description="Make sure to have songs in queue and be in the same voice channel as the bot playing music.")
+async def next(ctx):
+    voice = get(client.voice_clients, guild=ctx.guild)
+
+    if voice and voice.is_playing():
+        print("Playing Next Song")
+        voice.stop()
+        await ctx.send("Next Song")
+    else:
+        print("No music playing")
+        await ctx.send("No music playing failed")
+
+'''
+
+Volume command, do `.volume {1-100}`.
+
+'''
+@client.command(
+    pass_context=True, 
+    aliases=['v', 'vol'],
+    brief="Set volume from 1 - 100.",
+    description="Make sure to be connected in the same voice channel as the bot.")
+async def volume(ctx, volume: int):
+
+    if ctx.voice_client is None:
+        return await ctx.send("Not connected to voice channel")
+
+    print(volume/100)
+
+    ctx.voice_client.source.volume = volume / 100
+    await ctx.send(f"Changed volume to {volume}%")
+
 
 '''
 
