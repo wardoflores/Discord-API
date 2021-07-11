@@ -180,46 +180,57 @@ async def on_message(message):
 
             await message.channel.send(embed=embed)
 
-            # if message.content == message.channel.history(limit=1, oldest_first=False) - 1: 
-                # TODO make this logic into needing the right number to be inputted as +1 the previous message,
-                # Use `message.reference` maybe? Or `message.to_reference`
+            # msg = await  get_channel(830912769292369940).history(limit=1).flatten()
+            # msg = msg[0]
 
+                # TODO make this logic into needing the right number to be inputted as +1 the previous message,
+                # TODO ERROR: fetch_message missing 1 arhument: id
                 # TODO Add timer.
                 
-                # await message.channel.send('this code works')
+                # await message.channel.send('this code work!')
 
         # TODO Logic for multiple iterations of numbers with 3 - 6 - 9 in different positions
+        # TODO Mention loser
+
         if message.content.startswith('3') or message.content.startswith('6') or message.content.startswith('9'):
             embed = discord.Embed(title="Failed!",
                 description="You need to :clap: , Reset to 1.",
                 color=discord.Colour.red())
             await message.channel.send(embed=embed)
+            asyncio.sleep(3)
+            await message.channel.purge(bulk=True)
             
-        if message.content.startswith(("clap")):
+        if message.content.startswith(("\U0001f44f")):
             embed = discord.Embed(title=":clap:",
                 description="Hope this has 1 *3*, *6*, or *9*, Else reset to *1*.",
                 color=discord.Colour.green())
             await message.channel.send(embed=embed)
 
-        if message.content.endswith('33') or message.content.endswith('36') or message.content.endswith('39'):
+        if message.content.endswith('33') or message.content.endswith('36') and not message.content.endswith('6') or message.content.endswith('39') and not message.content.endswith('9'):
             embed = discord.Embed(title="Failed!",
                 description="You need to :clap: :clap:, Reset to 1.",
                 color=discord.Colour.red())
             await message.channel.send(embed=embed)
+            asyncio.sleep(3)
+            await message.channel.purge(bulk=True)
 
-        if message.content.endswith('63')  or message.content.endswith('66') or message.content.endswith('69'):
+        if message.content.endswith('63') and not message.content.endswith('3') or message.content.endswith('66') or message.content.endswith('69') and not message.content.endswith('9'):
             embed = discord.Embed(title="Failed!",
                 description="You need to :clap: :clap:, Reset to 1.",
                 color=discord.Colour.red())
             await message.channel.send(embed=embed)
+            asyncio.sleep(3)
+            await message.channel.purge(bulk=True)
 
-        if message.content.endswith('93') or message.content.endswith('96') or message.content.endswith('99'):
+        if message.content.endswith('93') and not message.content.endswith('3') or message.content.endswith('96')  and not message.content.endswith('6') or message.content.endswith('99'):
             embed = discord.Embed(title="Failed!",
                 description="You need to :clap: :clap:, Reset to 1.",
                 color=discord.Colour.red())
             await message.channel.send(embed=embed)
-
-        if message.content.startswith("clap clap") and not message.content.startswith("clap"):
+            asyncio.sleep(3)
+            await message.channel.purge(bulk=True)
+        
+        if message.content.startswith(("\U0001f44f" "\U0001f44f")) and not message.content.startswith(("\U0001f44f")):
             embed = discord.Embed(title=":clap: :clap:",
                 description="Hope this has 2 *3*, *6*, or *9*, Else reset to *1*.",
                 color=discord.Colour.green())
@@ -235,7 +246,9 @@ prompts a member has joined; member is an object in discord lib.
 @client.event 
 
 async def on_member_join(member):
-    embed = discord.Embed(title="f' Test subject {member} has joined a server.",
+    welcome = 748697685871296592
+    channel = discord.TextChannel(guild=welcome, state=None, data=None)
+    embed = discord.Embed(title=f' Test subject {member} has joined a server.',
     description="Your role will be set to verified automatically in 5 minutes.",
     color=discord.Colour.green())
 
@@ -243,16 +256,19 @@ async def on_member_join(member):
 
     asyncio.sleep(300)
 
-    role = get(member.guild.roles, name='verified')
+    ROLE = 748701878388523059
 
-    
-    await member.add_roles(role)
-    embed2 = discord.Embed(
-        title=f"{member} was given {role}", 
-        description="If you have time to provide feedback to improve the bot that would be well appreciated!", 
-        color=discord.Colour.blue())
+    role = get(member.guild.roles, name=ROLE)
 
-    print(embed=embed2)
+    async with channel.typing():
+
+        await member.add_roles(role)
+        embed2 = discord.Embed(
+            title=f"{member} was given {role}", 
+            description="If you have time to provide feedback to improve the bot that would be well appreciated!", 
+            color=discord.Colour.blue())
+
+        print(embed=embed2)
 
 
 
@@ -408,7 +424,8 @@ async def join(ctx):
         voice = await channel.connect()
         print(f'The bot has connected to {channel}\n')
 
-    await ctx.send(f'joined {channel}')    
+    await ctx.send(f'joined {channel}')
+
 
 '''
 
