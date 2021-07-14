@@ -19,14 +19,15 @@ from discord import Spotify
 
 system('cls') # For clean batch process.
 
-sound_folder = r'D:\Music\Sound Effects' # Put your own sound effects directory here.
-log_channel_id = int('821008061480697896') 
-tag_dict={'tag1': ['name1', 'name2'],
-          'tag2': ['name1', 'name2', 'name3']}
-
 intents = discord.Intents.all() # For spotify command.
 
 client = commands.Bot(command_prefix = '.', intents=intents)
+
+sound_folder = r'D:\Music\Sound Effects' # Put your own sound effects directory here.
+log_channel_id = client.get_channel(821008061480697896)
+tag_dict={'tag1': ['name1', 'name2'],
+          'tag2': ['name1', 'name2', 'name3']}
+
 
 
 '''
@@ -169,6 +170,10 @@ async def on_message(message):
     if message.channel.name == '3-6-9':
         if message.content.startswith('debug'):
             await message.channel.send('debugged 3-6-9!')
+
+        # count == int(message.content)
+        # if message.content != count:
+        #   failed embed
 
         if message.content.startswith('1') and len(message.content) == 1:
             embed = discord.Embed(title="3-6-9!",
@@ -456,8 +461,9 @@ it downloads the .mp3 file then plays it.
 @client.command(pass_context=True, aliases=['p','pla'], 
 brief="Plays a Youtube song. (Use 'Stream' command instead)", 
 description="Only works if bot is run in its directory.")
-async def play(ctx, url: str):
-
+async def play(ctx, url: str): 
+# TODO remove yt embed on command invoke.
+# TODO string arg searches appropriate yt link.
     if ctx.voice_client is None:
         if ctx.author.voice:
             await ctx.author.voice.channel.connect()
@@ -566,16 +572,25 @@ async def play(ctx, url: str):
     voice.source.volume = 0.07
 
     nname = name.rsplit("-", 2)
+    
+    videoID = url.split("watch?v=")[1].split("&")[0]
+
     embed = discord.Embed(
         title=f'Playing: {nname[0]}', 
-        description="Click on the reactions to play/pause/stop.", 
+        description="Click on the reactions to play/pause/stop/skip.", 
         color=discord.Colour.blue())
-    embed.add_field(
-        name="Reminder:", 
-        value="Command could only be run when bot is run on the `main.py` file's directory.")
+    # embed.set_thumbnail(url=ctx.author.avatar_url)
+    embed.set_thumbnail(url = "https://img.youtube.com/vi/{videoID}/0.jpg".format(videoID = videoID)) # or set_image
+    embed.set_footer(icon_url = ctx.author.avatar_url, text = f"Requested by {ctx.author.name}")
+    
 
     async with ctx.typing():
-        await ctx.send(embed=embed)
+        embedsend = await ctx.send(embed=embed) 
+        await embedsend.add_reaction('⏯️')
+        await embedsend.add_reaction('⏹️')
+        await embedsend.add_reaction('⏭️')
+
+
     print("playing\n")
 
 '''
@@ -586,7 +601,8 @@ Can use resume command after.
 @client.command(pass_context=True, aliases=['pa','pau'], 
 brief="Pauses a playing song.", 
 description="Doesn't 'stop' a song, there's a seeparate command for that.")
-async def pause(ctx):
+async def pause(ctx): 
+# TODO add reaction funtion to play and stream embed.
 
     voice = get(client.voice_clients, guild=ctx.guild)
 
@@ -606,7 +622,8 @@ Can only be used on 'paused' songs and not a 'stopped' song.
 @client.command(pass_context=True, aliases=['r','res'], 
 brief="Resumes a paused song.", 
 description="Only resumes a 'paused' song and not a 'stopped' song.")
-async def resume(ctx):
+async def resume(ctx): 
+# TODO add reaction function to play and stream embed.
 
     voice = get(client.voice_clients, guild=ctx.guild)
 
@@ -626,7 +643,8 @@ Cannot resume 'stopped' song.
 @client.command(pass_context=True, aliases=['s','sto'], 
 brief="Stops current song.",
  description="It is not a pause command.")
-async def stop(ctx):
+async def stop(ctx): 
+# TODO add reaction function to play and stream embed.
 
     voice = get(client.voice_clients, guild=ctx.guild)
 
@@ -686,7 +704,19 @@ async def queue(ctx, url: str):
         q_path = os.path.abspath(os.path.realpath("Queue"))
         system(f"spotdl -ff sng{q_num} -f " + '"' + q_path + '"' + " -s " + url)
 
-    await ctx.send("Adding song " + str(q_num) + " to the queue.")    
+    videoID = url.split("watch?v=")[1].split("&")[0]
+
+    embed = discord.Embed(
+        title=f"Adding song " + str(q_num) + " to the queue.", 
+        description="This command only works when using with the play command.", 
+        color=discord.Colour.teal())
+    # embed.set_thumbnail(url=ctx.author.avatar_url)
+    embed.set_thumbnail(url = "https://img.youtube.com/vi/{videoID}/0.jpg".format(videoID = videoID)) # or set_image
+    embed.set_footer(icon_url = ctx.author.avatar_url, text = f"Requested by {ctx.author.name}")
+    
+
+    async with ctx.typing():
+        embed = await ctx.send(embed=embed) 
 
     print("Song added to queue\n")
 
@@ -700,7 +730,8 @@ Next command for the music player.
     aliases=['n', 'nex'],
     brief="Plays the next song.",
     description="Make sure to have songs in queue and be in the same voice channel as the bot playing music.")
-async def next(ctx):
+async def next(ctx): 
+# TODO add reaction function to play and stream embed.
     voice = get(client.voice_clients, guild=ctx.guild)
 
     if voice and voice.is_playing():
@@ -721,7 +752,7 @@ Volume command, do `.volume {1-100}`.
     aliases=['v', 'vol'],
     brief="Set volume from 1 - 100.",
     description="Make sure to be connected in the same voice channel as the bot.")
-async def volume(ctx, volume: int):
+async def volume(ctx, volume: int): 
 
     if ctx.voice_client is None:
         return await ctx.send("Not connected to voice channel")
@@ -807,7 +838,7 @@ Pre-loaded cogs.
 
 '''
 client.load_extension('cogs.stream')
-# client.load_extension('cogs.soundboard') # TODO
+# client.load_extension('cogs.soundboard') # TODO split sound pack.
 
 '''
 

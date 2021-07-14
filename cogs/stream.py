@@ -70,17 +70,22 @@ class stream(commands.Cog):
     async def stream(self, ctx, *, url):
         """Plays a Youtube/Spotify song. (Use this instead of 'Play')"""
 
+
         async with ctx.typing():
             player = await YTDLSource.from_url(url, loop=self.client.loop, stream=True)
             ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
         
         embed = discord.Embed(
             title='Now streaming: {}'.format(player.title), 
-            description="Any yt video could be played, and if there's no youtube link, it will search spotify instead.", 
+            description="Click on the reactions to play/pause/stop/skip.", 
             color=discord.Colour.blue())
         embed.set_footer(icon_url = ctx.author.avatar_url, text = f"Requested by {ctx.author.name}")
+        
+        embedsend = await ctx.send(embed=embed) 
+        await embedsend.add_reaction('⏯️')
+        await embedsend.add_reaction('⏹️')
+        await embedsend.add_reaction('⏭️')
 
-        await ctx.send(embed=embed)
 
     @stream.before_invoke
     async def ensure_voice(self, ctx):
