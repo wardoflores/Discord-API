@@ -459,9 +459,9 @@ it downloads the .mp3 file then plays it.
 
 '''
 @client.command(pass_context=True, aliases=['p','pla'], 
-brief="Plays a Youtube song. (Use 'Stream' command instead)", 
+brief="Plays a Youtube song. (Input yt link)", 
 description="Only works if bot is run in its directory.")
-async def play(ctx, url: str): 
+async def playt(ctx, url: str): 
 # TODO remove yt embed on command invoke.
 # TODO string arg searches appropriate yt link.
     if ctx.voice_client is None:
