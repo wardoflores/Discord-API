@@ -17,15 +17,14 @@ from discord.ext import commands
 from discord.utils import get
 from discord import Spotify
 
-opus.load_opus('libopus.so.0')
-discord.opus.is_loaded()
+system('cls') # For clean batch process.
 
 intents = discord.Intents.all() # For spotify command.
 
 client = commands.Bot(command_prefix = '.', intents=intents)
 
 sound_folder = r'D:\Music\Sound Effects' # Put your own sound effects directory here.
-log_channel_id = client.get_channel(821008061480697896)
+# log_channel_id = ctx.channel.name == 'log'
 tag_dict={'tag1': ['name1', 'name2'],
           'tag2': ['name1', 'name2', 'name3']}
 
