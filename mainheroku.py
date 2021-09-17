@@ -24,7 +24,7 @@ intents = discord.Intents.all() # For spotify command.
 
 client = commands.Bot(command_prefix = '.', intents=intents)
 
-sound_folder = 'sounds' # Put your own sound effects directory here.
+sound_folder = '/sounds' # Put your own sound effects directory here.
 log_channel_id = client.get_channel(821008061480697896)
 tag_dict={'tag1': ['name1', 'name2'],
           'tag2': ['name1', 'name2', 'name3']}
