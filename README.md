@@ -4,15 +4,15 @@ First API application for Python, adding more features over time.
 
 Hosted using Heroku, `Procfile` file and `joey-discord` file is used for Heroku app. 
 
-# Usage
+## Usage
 
-make a `secret.py` file in the root directory and add your `TOKEN` variable assigned to `client.run('')` with your API key as it's parameter.                                                 
+make a `secret.py` file in the root directory and add your `TOKEN` variable assigned to `client.run('')` with your API key as it's parameter.
 
 Run `start.bat`.
 
 `play` command could only be run when bot is run on the `main.py` file's directory.
 
-# Future Features
+## Future Features
 
 input functions through reactions.
 
@@ -22,16 +22,16 @@ Show list of queued Songs.
 
 
 Leveling system.
-# Resources
+## Resources
 
-## Lucas - Structure
+### Lucas - Structure
 https://www.youtube.com/channel/UCR-zOCvDCayyYy1flR5qaAg
 
-## HowToDoThings - Voice / music playing
+### HowToDoThings - Voice / music playing
 https://www.youtube.com/channel/UC84QByFyK-WTB9Y56AU5EMg
 
-## JonSnowWhite - Soundboard
+### JonSnowWhite - Soundboard
 https://github.com/JonSnowWhite/discord-soundboard-bot
 
-## Official Discord.py repository 
+### Official Discord.py repository 
 https://github.com/Rapptz/discord.py
