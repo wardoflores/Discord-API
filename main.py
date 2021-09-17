@@ -838,7 +838,7 @@ Pre-loaded cogs.
 
 '''
 client.load_extension('cogs.stream')
-# client.load_extension('cogs.soundboard') # TODO split sound pack.
+client.load_extension('cogs.soundboard')
 
 '''
 
