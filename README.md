@@ -2,6 +2,8 @@
 
 First API application for Python, adding more features over time.
 
+Hosted using Heroku, `Procfile` file and `joey-discord` file is used for Heroku app. 
+
 # Usage
 
 make a `secret.py` file in the root directory and add your `TOKEN` variable assigned to `client.run('')` with your API key as it's parameter.                                                 
