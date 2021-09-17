@@ -2,7 +2,7 @@
 
 First API application for Python, adding more features over time.
 
-Hosted using Heroku, `Procfile` file and `joey-discord` file is used for Heroku app. 
+Hosted using Heroku, `Procfile` file and `joey-discord` file is used for Heroku app.
 
 ## Usage
 
@@ -20,8 +20,8 @@ Play spotify Playlists.
 
 Show list of queued Songs.
 
-
 Leveling system.
+
 ## Resources
 
 ### Lucas - Structure
