@@ -1,5 +1,0 @@
-dnspython
-PyNaCl
-async-timeout
-discord.py
-youtube_dl
