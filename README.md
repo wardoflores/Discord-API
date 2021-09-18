@@ -2,7 +2,7 @@
 
 First API application for Python, adding more features over time.
 
-Hosted using Heroku, `Procfile` file and `joey-discord` file is used for Heroku app.
+Hosted using Heroku, `mainheroku.py` module, `Procfile` file, and `joey-discord` folder (if clone is mistakenly pushed) is used for Heroku app.
 
 ## Usage
 
