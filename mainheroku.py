@@ -839,7 +839,7 @@ Pre-loaded cogs.
 
 '''
 client.load_extension('cogs.stream')
-client.load_extension('cogs.soundboard')
+# client.load_extension('cogs.soundboard')
 
 '''
 
