@@ -19,7 +19,7 @@ class SoundboardCog(commands.Cog):
             folder: The path to the folder with the sound files (str)
             log_channel_id: The id of the log_channel (int)
             """
-        self.folder = "/sounds"
+        self.folder = "./sounds"
         self.bot = bot
         self.log_channel_id = log_channel_id
         self.send_log = None             # will be assigned later

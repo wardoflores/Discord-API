@@ -3,4 +3,4 @@ PyNaCl
 async-timeout
 discord.py
 discord.py[voice]
-youtube_dl
+yt_dlp

@@ -10,7 +10,7 @@ import os # For cog loading pre start.
 from os import system
 import shutil # For music player feature.
 import asyncio
-import youtube_dl # For music player.
+import yt_dlp # For music player.
 import discord
 from discord import opus
 from discord.ext import commands
@@ -549,7 +549,7 @@ async def playt(ctx, url: str):
     async with ctx.typing():
         await ctx.send("Downloading Audio now...")
         try:
-            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 print("Downloading audio now\n")
                 ydl.cache.remove()
                 ydl.download([url])
@@ -696,7 +696,7 @@ async def queue(ctx, url: str):
         }],
     }   
     try:
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             print('Downloading audio now.\n')
             ydl.download([url])
     except:

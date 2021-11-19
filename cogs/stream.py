@@ -3,7 +3,7 @@ import os
 from os import system
 import shutil
 import asyncio
-import youtube_dl
+import yt_dlp
 import discord
 from discord.ext import commands
 from discord.utils import get
@@ -34,9 +34,9 @@ ffmpeg_options = {
 'options': '-vn'
 }
 
-ytdl = youtube_dl.YoutubeDL(ydl_opts)
+ytdl = yt_dlp.YoutubeDL(ydl_opts)
 
-youtube_dl.utils.bug_reports_message = lambda: ''
+yt_dlp.utils.bug_reports_message = lambda: ''
 
 class YTDLSource(discord.PCMVolumeTransformer):
     def __init__(self, source, *, data, volume=0.5):
