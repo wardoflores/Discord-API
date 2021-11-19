@@ -1,4 +1,4 @@
-#! python3
+#!/bin/zsh
 # Discord Bot with Admin and music playing Features.
 # Eduardo Jose Flores III: https://github.com/Coalemus
 # Copyright (c) Eduardo Jose Flores III
