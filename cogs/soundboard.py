@@ -21,7 +21,7 @@ class SoundboardCog(commands.Cog):
             """
         self.folder = "./sounds"
         self.bot = bot
-        self.log_channel_id = log_channel_id
+        # self.log_channel_id = log_channel_id
         self.send_log = None             # will be assigned later
 
         self.sound_list = SoundboardCog._load_songs(self.folder)
@@ -53,7 +53,7 @@ class SoundboardCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.send_log = ExtModule.get_send_log(self)
+        # self.send_log = ExtModule.get_send_log(self)
         opus.load_opus('libopus.so.0')  # the opus library
         print('soundboard cog is ready.')
 

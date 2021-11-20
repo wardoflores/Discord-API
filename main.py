@@ -17,7 +17,7 @@ from discord.ext import commands
 from discord.utils import get
 from discord import Spotify
 
-system('cls') # For clean batch process.
+system('clear') # For clean batch process.
 
 intents = discord.Intents.all() # For spotify command.
 
