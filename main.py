@@ -28,8 +28,6 @@ sound_folder = r'D:\Music\Sound Effects' # Put your own sound effects directory 
 tag_dict={'tag1': ['name1', 'name2'],
           'tag2': ['name1', 'name2', 'name3']}
 
-
-
 '''
 
 Bot ready and status configuration.
@@ -838,7 +836,7 @@ Pre-loaded cogs.
 
 '''
 client.load_extension('cogs.stream')
-client.load_extension('cogs.soundboard')
+# client.load_extension('cogs.soundboard')
 
 '''
 
