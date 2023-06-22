@@ -10,7 +10,7 @@ import os # For cog loading pre start.
 from os import system
 import shutil # For music player feature.
 import asyncio
-import yt_dlp # For music player.
+#import yt_dlp # For music player.
 import discord
 from discord import opus
 from discord.ext import commands
